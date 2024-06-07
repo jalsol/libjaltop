@@ -3,10 +3,5 @@
 #include <iostream>
 
 int main() {
-    for (;;) {
-        std::cout << jaltop_cpu_percentage(1000)
-                  << ' '
-                  << jaltop_ram_percentage()
-                  << '\n';
-    }
+    std::cout << jaltop_cpu_usage(0) << ' ' << jaltop_ram_usage() << '\n';
 }

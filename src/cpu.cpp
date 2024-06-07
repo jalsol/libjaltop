@@ -15,8 +15,6 @@ struct Jiffies {
     unsigned long long work;
 };
 
-std::optional<Jiffies> latest_jiffies;
-
 std::optional<Jiffies> parse_from_system() {
     std::ifstream in("/proc/stat");
 
@@ -38,6 +36,9 @@ std::optional<Jiffies> parse_from_system() {
 
 extern "C"
 float jaltop_cpu_usage(int interval_ms) {
+    static std::optional<Jiffies> latest_jiffies = std::nullopt;
+    static float result = NaN;
+
     const auto previous_jiffies = [&] {
         if (interval_ms > 0) {
             return parse_from_system();
@@ -45,7 +46,7 @@ float jaltop_cpu_usage(int interval_ms) {
 
         if (!latest_jiffies.has_value()) {
             latest_jiffies = parse_from_system();
-            std::this_thread::sleep_for(std::chrono::milliseconds(1));
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
         }
 
         return latest_jiffies;
@@ -66,11 +67,12 @@ float jaltop_cpu_usage(int interval_ms) {
     const auto total_diff = current_jiffies->total - previous_jiffies->total;
     const auto work_diff  = current_jiffies->work  - previous_jiffies->work;
 
-    const auto cpu_percentage = (total_diff != 0)
-                              ? (1.0f * work_diff / total_diff)
-                              : NaN;
-
     latest_jiffies = current_jiffies;
-    return cpu_percentage;
+
+    if (total_diff != 0) {
+        result = 1.0f * work_diff / total_diff;
+    }
+
+    return result;
 }
 
