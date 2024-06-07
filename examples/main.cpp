@@ -4,6 +4,9 @@
 
 int main() {
     for (;;) {
-        std::cout << jaltop_cpu_percentage(1000) << '\n';
+        std::cout << jaltop_cpu_percentage(1000)
+                  << ' '
+                  << jaltop_ram_percentage()
+                  << '\n';
     }
 }
