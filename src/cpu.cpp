@@ -37,7 +37,7 @@ std::optional<Jiffies> parse_from_system() {
 } // namespace
 
 extern "C"
-float jaltop_cpu_percentage(int interval_ms) {
+float jaltop_cpu_usage(int interval_ms) {
     const auto previous_jiffies = [&] {
         if (interval_ms > 0) {
             return parse_from_system();

@@ -8,7 +8,7 @@ constexpr auto NaN = std::numeric_limits<float>::quiet_NaN();
 
 extern "C" {
 
-float jaltop_ram_percentage() {
+float jaltop_ram_usage() {
     struct sysinfo sysinfo;
     const auto retval = ::sysinfo(&sysinfo);
 
@@ -16,7 +16,7 @@ float jaltop_ram_percentage() {
         return NaN;
     }
 
-    return 1.0 * sysinfo.freeram / sysinfo.totalram;
+    return 1.0 * (sysinfo.totalram - sysinfo.freeram) / sysinfo.totalram;
 }
 
 unsigned long jaltop_ram_free() {
