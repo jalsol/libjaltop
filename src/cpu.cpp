@@ -37,7 +37,7 @@ std::optional<Jiffies> parse_from_system() {
 extern "C"
 float jaltop_cpu_usage(int interval_ms) {
     static std::optional<Jiffies> latest_jiffies = std::nullopt;
-    static float result = NaN;
+    static auto result = NaN;
 
     const auto previous_jiffies = [&] {
         if (interval_ms > 0) {

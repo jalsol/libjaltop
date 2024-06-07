@@ -16,7 +16,7 @@ float jaltop_ram_usage() {
         return NaN;
     }
 
-    return 1.0 * (sysinfo.totalram - sysinfo.freeram) / sysinfo.totalram;
+    return 1.0f * (sysinfo.totalram - sysinfo.freeram) / sysinfo.totalram;
 }
 
 unsigned long jaltop_ram_free() {
