@@ -23,12 +23,12 @@ std::optional<Jiffies> parse_from_system() {
     }
 
     std::string label;
-    unsigned long long user, nice, system, idle, iowait, irq, softirq;
-    in >> label >> user >> nice >> system >> idle >> iowait >> irq >> softirq;
+    unsigned long long user, nice, system, idle, iowait, irq, softirq, steal;
+    in >> label >> user >> nice >> system >> idle >> iowait >> irq >> softirq >> steal;
 
     Jiffies result;
-    result.total = user + nice + system + idle + iowait + irq + softirq;
-    result.work  = user + nice + system;
+    result.total = user + nice + system + idle + iowait + irq + softirq + steal;
+    result.work  = user + nice + system + irq + softirq + steal;
     return result;
 }
 
